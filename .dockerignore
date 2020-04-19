@@ -1,0 +1,13 @@
+.dockerignore
+.gitignore
+.git
+.vscode
+.idea
+*Dockerfile
+*docker-compose.yml
+README.md
+yarn-error.log
+node_modules/
+dist/
+test/
+error-logs/

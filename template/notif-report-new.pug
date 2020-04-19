@@ -1,0 +1,34 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    
+  body
+    h2 We got new order:
+    p Customer:
+    ul
+        li
+            span Name: #{customer.name}
+        li
+            span Email: #{customer.email}
+        li
+            span Phone: #{customer.phone}
+        li
+            span Shipping Address: #{customer.address}
+        li
+            span Billing Address: #{customer.billingAddress}
+        li
+            span Company: #{customer.company}
+            
+    ul
+        li
+            span Note: #{note}
+        li
+            span Items:
+            ul
+                each val, index in items
+                    li
+                        span sku: #{val.product.sku}, qty: #{val.qty}
+    
+    

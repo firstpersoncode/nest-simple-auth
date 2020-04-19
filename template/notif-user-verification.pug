@@ -1,0 +1,12 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    
+  body
+    h2 Hello #{name}
+    h4 Thank you for requesting bulk order!
+    p We need to make sure your email is active
+    a(href=action) Click this link to verify your email
+    p Or try to copy and paste this link to your browser: #{action}
