@@ -8,6 +8,7 @@ import {
     OneToMany
 } from 'typeorm'
 import * as bcrypt from 'bcryptjs'
+import * as shortid from 'shortid'
 
 import { ReportEntity } from '../report/report.entity'
 
@@ -42,22 +43,19 @@ export class UserEntity extends BaseEntity {
         type: 'date',
         nullable: true
     })
-    dob: Date
+    dob: string
 
     @Column()
     address: string
 
-    @Column()
+    @Column({ type: 'float' })
     longitude: number
 
-    @Column()
+    @Column({ type: 'float' })
     latitude: number
 
     @Column()
     password: string
-
-    @Column({ default: false })
-    redzone: boolean
 
     @Column({ default: 0 })
     ntr: number
@@ -88,6 +86,11 @@ export class UserEntity extends BaseEntity {
         default: 0
     })
     archived: number
+
+    @Column({
+        default: shortid()
+    })
+    code: string
 
     async checkPassword(plainPassword: string) {
         return await bcrypt.compare(plainPassword, this.password)

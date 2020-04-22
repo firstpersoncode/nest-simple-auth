@@ -1,16 +1,9 @@
-import { IsLongitude, IsLatitude, IsOptional, IsBoolean, IsInt } from 'class-validator'
+import { IsOptional, IsBoolean, IsLongitude, IsLatitude } from 'class-validator'
 
 export class ReportUpdate {
     @IsOptional()
-    @IsInt()
-    status?: number
-
-    @IsOptional()
     @IsBoolean()
     self?: boolean
-
-    @IsOptional()
-    name?: string
 
     @IsOptional()
     @IsBoolean()
@@ -35,9 +28,6 @@ export class ReportUpdate {
     @IsOptional()
     @IsBoolean()
     contacted?: boolean
-
-    @IsOptional()
-    address?: string
 
     @IsOptional()
     @IsLongitude()

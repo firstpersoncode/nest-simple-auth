@@ -18,7 +18,7 @@ export class ReportService {
         private readonly repository: Repository<ReportEntity>,
 
         private readonly userService: UserService,
-        private readonly mailerService: MailerService,
+        private readonly mailerService: MailerService
     ) {}
 
     async queryAll(options: ReportQuery): Promise<ReportEntity[]> {
@@ -57,6 +57,8 @@ export class ReportService {
             throw new NotFoundException(`There isn't any report with identifier: ${id}`)
         }
 
+        delete report.user.password
+
         return report
     }
 
@@ -65,19 +67,7 @@ export class ReportService {
         const report = new ReportEntity()
         report.publicId = uuid()
         report.user = user
-        const fields = [
-            'self',
-            'name',
-            'fever',
-            'cough',
-            'sneeze',
-            'sore',
-            'asphyxiate',
-            'contacted',
-            'address',
-            'latitude',
-            'longitude',
-        ]
+        const fields = ['self', 'fever', 'cough', 'sneeze', 'sore', 'asphyxiate', 'contacted', 'latitude', 'longitude']
 
         for (const field in body) {
             if (fields.includes(field)) {
@@ -86,36 +76,13 @@ export class ReportService {
         }
 
         await report.save()
-        const warning =
-            report.fever || report.cough || report.sneeze || report.sore || report.asphyxiate || report.contacted
-        await this.userService.notification(
-            'ntr',
-            {
-                latitude: report.latitude,
-                longitude: report.longitude,
-            },
-            warning,
-        )
 
         return report
     }
 
     async update(id: string, body: ReportUpdate): Promise<ReportEntity> {
         const report = await this.queryById(id)
-        const fields = [
-            'status',
-            'self',
-            'name',
-            'fever',
-            'cough',
-            'sneeze',
-            'sore',
-            'asphyxiate',
-            'contacted',
-            'address',
-            'latitude',
-            'longitude',
-        ]
+        const fields = ['self', 'fever', 'cough', 'sneeze', 'sore', 'asphyxiate', 'contacted', 'latitude', 'longitude']
 
         for (const field in body) {
             if (fields.includes(field)) {
@@ -164,7 +131,7 @@ export class ReportService {
             from: 'nasser.maronie@gmail.com',
             subject: 'NEW REPORT',
             template: 'notif-report-new',
-            context: report,
+            context: report
         })
 
         return true

@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsLongitude, IsLatitude, IsOptional, IsBoolean } from 'class-validator'
+import { IsNotEmpty, IsOptional, IsBoolean, IsLongitude, IsLatitude } from 'class-validator'
 
 export class ReportCreate {
     @IsNotEmpty()
@@ -7,9 +7,6 @@ export class ReportCreate {
     @IsOptional()
     @IsBoolean()
     self?: boolean
-
-    @IsOptional()
-    name?: string
 
     @IsOptional()
     @IsBoolean()
@@ -34,9 +31,6 @@ export class ReportCreate {
     @IsOptional()
     @IsBoolean()
     contacted?: boolean
-
-    @IsNotEmpty()
-    address: string
 
     @IsNotEmpty()
     @IsLongitude()

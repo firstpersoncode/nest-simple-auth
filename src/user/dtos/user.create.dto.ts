@@ -1,12 +1,6 @@
-import { IsNotEmpty, IsInt, Min, Max, IsLongitude, IsLatitude, IsOptional, IsDateString } from 'class-validator'
+import { IsNotEmpty, IsDateString, IsNumberString, IsLongitude, IsLatitude } from 'class-validator'
 
 export class UserCreate {
-    @IsOptional()
-    @IsInt()
-    @Min(0)
-    @Max(2)
-    role?: number
-
     @IsNotEmpty()
     name: string
 
@@ -14,6 +8,7 @@ export class UserCreate {
     email: string
 
     @IsNotEmpty()
+    @IsNumberString()
     phone: string
 
     @IsNotEmpty()

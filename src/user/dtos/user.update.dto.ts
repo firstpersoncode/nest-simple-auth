@@ -1,16 +1,6 @@
-import { IsInt, Min, Max, IsOptional, IsLongitude, IsLatitude, IsDateString } from 'class-validator'
+import { IsOptional, IsDateString, IsNumber, IsLongitude, IsLatitude } from 'class-validator'
 
 export class UserUpdate {
-    @IsOptional()
-    @IsInt()
-    status?: number
-
-    @IsOptional()
-    @IsInt()
-    @Min(0)
-    @Max(2)
-    role?: number
-
     @IsOptional()
     name?: string
 
@@ -18,6 +8,7 @@ export class UserUpdate {
     email?: string
 
     @IsOptional()
+    @IsNumber()
     phone?: string
 
     @IsOptional()

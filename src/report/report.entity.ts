@@ -5,7 +5,7 @@ import {
     Entity,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
-    ManyToOne,
+    ManyToOne
 } from 'typeorm'
 
 import { UserEntity } from '../user/user.entity'
@@ -19,74 +19,74 @@ export class ReportEntity extends BaseEntity {
     publicId: string
 
     @Column({
-        default: 0,
+        default: 1
     })
     status: number
 
     @Column({
-        default: false,
+        default: false
     })
     self: boolean
 
     @Column({
-        default: 'anonymous',
+        default: 'anonymous'
     })
     name: string
 
     @Column({
-        default: false,
+        default: false
     })
     fever: boolean
 
     @Column({
-        default: false,
+        default: false
     })
     cough: boolean
 
     @Column({
-        default: false,
+        default: false
     })
     sneeze: boolean
 
     @Column({
-        default: false,
+        default: false
     })
     sore: boolean
 
     @Column({
-        default: false,
+        default: false
     })
     asphyxiate: boolean
 
     @Column({
-        default: false,
+        default: false
     })
     contacted: boolean
 
-    @Column()
+    @Column({ type: 'float' })
     longitude: number
 
-    @Column()
+    @Column({ type: 'float' })
     latitude: number
 
     @ManyToOne(
         () => UserEntity,
-        (user) => user.reports,
+        (user) => user.reports
     )
     user: UserEntity
 
     @CreateDateColumn({
-        type: 'timestamptz',
+        type: 'timestamptz'
     })
     created: string
 
     @UpdateDateColumn({
-        type: 'timestamptz',
+        type: 'timestamptz'
     })
     updated: string
 
     @Column({
-        default: 0,
+        default: 0
     })
     archived: number
 }

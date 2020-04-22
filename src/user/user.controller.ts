@@ -1,5 +1,4 @@
-import { Get, Controller, Param, Body, Post, Delete, Put, Query, Res } from '@nestjs/common'
-import { Response } from 'express'
+import { Get, Controller, Param, Body, Post, Delete, Put, Query } from '@nestjs/common'
 
 import { USER_ROLE } from '../utils/constants'
 import { UserRole } from '../utils/decorators/user-role.decorator'
@@ -25,7 +24,7 @@ export class UserController {
         @Query('start') start?: string,
         @Query('end') end?: string,
         @Query('q') q?: string,
-        @Query('v') v?: string,
+        @Query('v') v?: string
     ) {
         const options = {
             orderBy: orderBy || 'created',
@@ -35,7 +34,7 @@ export class UserController {
             ...(start ? { start } : {}),
             ...(end ? { end } : {}),
             ...(q ? { q } : {}),
-            ...(v ? { v } : {}),
+            ...(v ? { v } : {})
         } as UserQuery
 
         const users = await this.service.queryAll(options)
@@ -47,17 +46,14 @@ export class UserController {
         })
     }
 
-    // @Get('dummy')
-    // @Public()
-    // async dummy() {
-    //     const users = await this.service.dummy()
-    //
-    //     return users.map((user) => {
-    //         delete user.password
-    //
-    //         return user
-    //     })
-    // }
+    @Get('reset-password')
+    @Public()
+    public async resetPassword(@Query('email') email: string) {
+        const newPassword = await this.service.resetPassword(email)
+        this.service.notifResetPassword(email, newPassword)
+
+        return { email, newPassword: true }
+    }
 
     @Get(':id')
     @UserRole(USER_ROLE.read)
@@ -68,22 +64,23 @@ export class UserController {
         return user
     }
 
-    @Get(':id/verify')
+    @Get(':id/generate-code')
     @UserRole(USER_ROLE.read)
-    public async verify(@Param('id') id: string, @Res() res: Response) {
-        const user = await this.service.verify(id)
+    public async generateCode(@Param('id') id: string) {
+        const user = await this.service.generateCode(id)
+        this.service.notifVerification(id)
+        delete user.password
 
-        if (user.status) {
-            return res.render('notif-user-verified', { email: user.email })
-        }
-
-        return res.render('notif-error')
+        return user
     }
 
-    @Get(':id/verification')
+    @Get(':id/verify')
     @UserRole(USER_ROLE.read)
-    public async verification(@Param('id') id: string) {
-        return await this.service.notifVerification(id)
+    public async verify(@Param('id') id: string, @Query('code') code: string) {
+        const user = await this.service.verify(id, code)
+        delete user.password
+
+        return user
     }
 
     @Post()
@@ -107,10 +104,26 @@ export class UserController {
         return user
     }
 
+    @Put(':id/:notifier')
+    @Owner()
+    @UserRole(USER_ROLE.write)
+    async notification(@Param('id') id: string, @Param('notifier') notifier: string) {
+        const user = await this.service.notification(id, notifier)
+        delete user.password
+
+        return user
+    }
+
     @Delete()
     @UserRole(USER_ROLE.super)
     async deleteArchives() {
-        return await this.service.removeArchives()
+        const users = await this.service.removeArchives()
+
+        return users.map((user) => {
+            delete user.password
+
+            return user
+        })
     }
 
     @Delete(':id')

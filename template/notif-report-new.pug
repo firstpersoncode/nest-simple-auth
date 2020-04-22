@@ -5,30 +5,26 @@ html
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
     
   body
-    h2 We got new order:
-    p Customer:
+    h2 We got new report:
+    p User:
     ul
         li
-            span Name: #{customer.name}
+            span Name: #{user.name}
         li
-            span Email: #{customer.email}
+            span Email: #{user.email}
         li
-            span Phone: #{customer.phone}
+            span Phone: #{user.phone}
         li
-            span Shipping Address: #{customer.address}
+            span Address: #{user.address}
         li
-            span Billing Address: #{customer.billingAddress}
-        li
-            span Company: #{customer.company}
+            span dob: #{user.dob}
             
+    p Report:
     ul
         li
-            span Note: #{note}
+            span Self: #{self}
         li
-            span Items:
-            ul
-                each val, index in items
-                    li
-                        span sku: #{val.product.sku}, qty: #{val.qty}
+            span Name: #{name}
+        
     
     
