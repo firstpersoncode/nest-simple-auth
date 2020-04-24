@@ -15,8 +15,8 @@ export class BaseGuard {
                 sub: payload.publicId,
                 role: payload.role
             },
-            process.env.APP_SECRET,
-            { expiresIn: '1h' }
+            process.env.APP_SECRET
+            // { expiresIn: '1h' }
         )
         const token = new TokenEntity()
         token.sign = sign

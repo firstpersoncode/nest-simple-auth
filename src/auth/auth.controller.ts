@@ -37,7 +37,7 @@ export class AuthController {
     public async login(@Body() body: AuthLogin, @Res() res: Response) {
         const sign = await this.service.login(body)
         res.cookie(signName, sign, {
-            maxAge: 60 * 60 * 1000 + 60, // '1h'
+            // maxAge: 60 * 60 * 1000 + 60, // '1h'
             httpOnly: true,
             secure: Boolean(process.env.NODE_ENV === 'production')
         })
