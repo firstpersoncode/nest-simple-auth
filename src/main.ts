@@ -1,53 +1,53 @@
-import 'dotenv/config'
-import 'reflect-metadata'
-
-import { join } from 'path'
-import { NestFactory, Reflector } from '@nestjs/core'
 import { ValidationPipe } from '@nestjs/common'
+import { NestFactory, Reflector } from '@nestjs/core'
 import { NestExpressApplication } from '@nestjs/platform-express'
 import { useContainer } from 'class-validator'
 import * as cookieParser from 'cookie-parser'
+import 'dotenv/config'
 
-import { SessionGuard } from './utils/guards/session.guard'
-import { OwnerGuard } from './utils/guards/owner.guard'
-import { RoleGuard } from './utils/guards/role.guard'
+import { join } from 'path'
+import 'reflect-metadata'
 import { AppModule } from './app.module'
+import { OwnerGuard } from './auth/guards/owner.guard'
+import { RoleGuard } from './auth/guards/role.guard'
 
-async function bootstrap() {
-    const app = await NestFactory.create<NestExpressApplication>(AppModule)
+import { SessionGuard } from './auth/guards/session.guard'
 
-    app.useGlobalPipes(
-        new ValidationPipe({
-            transform: true,
-            whitelist: true,
-            validationError: { target: false }
-        })
-    )
+async function bootstrap () {
+	const app = await NestFactory.create<NestExpressApplication>(AppModule)
 
-    app.use(cookieParser())
+	app.useGlobalPipes(
+		new ValidationPipe({
+			transform: true,
+			whitelist: true,
+			validationError: { target: false }
+		})
+	)
 
-    app.useStaticAssets(join(__dirname, '..', 'public'))
-    app.setBaseViewsDir(join(__dirname, '..', 'template'))
-    app.setViewEngine('pug')
+	app.use(cookieParser())
 
-    const reflector = app.get(Reflector)
-    void reflector
+	app.useStaticAssets(join(__dirname, '..', 'public'))
+	app.setBaseViewsDir(join(__dirname, '..', 'template'))
+	app.setViewEngine('pug')
 
-    app.useGlobalGuards(new SessionGuard(reflector))
-    app.useGlobalGuards(new OwnerGuard(reflector))
-    app.useGlobalGuards(new RoleGuard(reflector))
+	const reflector = app.get(Reflector)
+	void reflector
 
-    useContainer(app.select(AppModule), { fallbackOnErrors: true })
-    app.enableCors({
-        origin: function(origin, callback) {
-            // allow requests with no origin
-            // (like mobile apps or curl requests)
-            // if (!origin) return callback(null, true)
+	app.useGlobalGuards(new SessionGuard(reflector))
+	app.useGlobalGuards(new OwnerGuard(reflector))
+	app.useGlobalGuards(new RoleGuard(reflector))
 
-            return callback(null, true)
-        }
-    })
-    await app.listen(process.env.PORT || 5000)
+	useContainer(app.select(AppModule), { fallbackOnErrors: true })
+	app.enableCors({
+		origin: function (origin, callback) {
+			// allow requests with no origin
+			// (like mobile apps or curl requests)
+			// if (!origin) return callback(null, true)
+
+			return callback(null, true)
+		}
+	})
+	await app.listen(process.env.PORT || 5000)
 }
 
 bootstrap()

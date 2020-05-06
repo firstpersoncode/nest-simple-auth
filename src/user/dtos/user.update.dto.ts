@@ -1,31 +1,31 @@
-import { IsOptional, IsDateString, IsNumber, IsLongitude, IsLatitude } from 'class-validator'
+import { IsDateString, IsLatitude, IsLongitude, IsNumber, IsOptional } from 'class-validator'
 
 export class UserUpdate {
-    @IsOptional()
-    name?: string
+	@IsOptional()
+	name?: string
 
-    @IsOptional()
-    email?: string
+	@IsOptional()
+	email?: string
 
-    @IsOptional()
-    @IsNumber()
-    phone?: string
+	@IsOptional()
+	@IsNumber()
+	phone?: string
 
-    @IsOptional()
-    @IsDateString()
-    dob?: string
+	@IsOptional()
+	@IsDateString()
+	dob?: string
 
-    @IsOptional()
-    address?: string
+	@IsOptional()
+	address?: string
 
-    @IsOptional()
-    @IsLongitude()
-    longitude?: number
+	@IsOptional()
+	@IsLongitude()
+	longitude?: number
 
-    @IsOptional()
-    @IsLatitude()
-    latitude?: number
+	@IsOptional()
+	@IsLatitude()
+	latitude?: number
 
-    @IsOptional()
-    password?: string
+	@IsOptional()
+	password?: string
 }

@@ -1,21 +1,20 @@
-import { Module } from '@nestjs/common'
-import { TypeOrmModule } from '@nestjs/typeorm'
-import { MailerModule } from '@nestjs-modules/mailer'
+import { MailerModule } from "@nestjs-modules/mailer"
+import { Module } from "@nestjs/common"
+import { TypeOrmModule } from "@nestjs/typeorm"
 
-import * as ormconfig from './orm.config'
-import * as mailerconfig from './mailer.config'
+import { AuthModule } from "./auth/auth.module"
+import * as mailerconfig from "./mailer.config"
 
-import { AuthModule } from './auth/auth.module'
-import { UserModule } from './user/user.module'
-import { ReportModule } from './report/report.module'
+import * as ormconfig from "./orm.config"
+import { UserModule } from "./user/user.module"
 
 @Module({
-    imports: [
-        TypeOrmModule.forRoot(ormconfig),
-        MailerModule.forRoot(mailerconfig),
-        AuthModule,
-        UserModule,
-        ReportModule,
-    ],
+	imports: [
+		TypeOrmModule.forRoot(ormconfig),
+		MailerModule.forRoot(mailerconfig),
+		AuthModule,
+		UserModule
+	]
 })
-export class AppModule {}
+export class AppModule {
+}
